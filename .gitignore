@@ -41,3 +41,6 @@ Thumbs.db
 desktop.ini
 
 secrets.toml
+
+# Streamlit secrets
+.streamlit/secrets.toml

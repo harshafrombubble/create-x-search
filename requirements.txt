@@ -1,6 +1,6 @@
 streamlit==1.31.1
 pandas==2.2.1
-openai==1.12.0
+openai==1.55.3
 selenium==4.18.1
 beautifulsoup4==4.12.3
 youtube-transcript-api==0.6.2
