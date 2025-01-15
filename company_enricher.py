@@ -1,17 +1,15 @@
+import os
+import openai
+import streamlit as st
 import pandas as pd
 import time
-import openai
-import os
-from dotenv import load_dotenv
-import requests
 from bs4 import BeautifulSoup
 import re
 from urllib.parse import urlparse
 from youtube_transcript_api import YouTubeTranscriptApi
 
-# Load environment variables
-load_dotenv()
-openai.api_key = os.getenv('OPENAI_API_KEY')
+# Set OpenAI API key from Streamlit secrets
+openai.api_key = st.secrets["openai_api_key"]
 
 def count_tokens(text):
     """Estimate the number of tokens in a text string"""

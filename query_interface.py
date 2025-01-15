@@ -6,7 +6,6 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 import os
-from dotenv import load_dotenv
 from founder_enricher import extract_linkedin_data, analyze_founder_background, setup_driver, linkedin_login
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
@@ -22,11 +21,7 @@ from bs4 import BeautifulSoup
 import re
 from urllib.parse import urljoin, urlparse
 
-# Load environment variables
-load_dotenv()
-openai.api_key = os.getenv('OPENAI_API_KEY')
-
-# Set up logging
+# Set up logging first
 logging.basicConfig(
     level=logging.ERROR,
     format='%(asctime)s - %(levelname)s - %(message)s',
@@ -35,6 +30,17 @@ logging.basicConfig(
         logging.StreamHandler()
     ]
 )
+
+# Safely load secrets
+try:
+    openai.api_key = st.secrets["openai_api_key"]
+except Exception as e:
+    logging.error(f"Error loading secrets: {str(e)}")
+    st.error("""Error loading secrets. Please ensure your .streamlit/secrets.toml file is properly formatted:
+    1. Check for any unescaped special characters
+    2. Verify the file path: .streamlit/secrets.toml
+    3. Confirm the required keys are present: openai_api_key""")
+    st.stop()
 
 # Database setup
 def init_db():

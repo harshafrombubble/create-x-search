@@ -9,13 +9,13 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import openai
 import os
-from dotenv import load_dotenv
+import streamlit as st
+import logging
 
-# Load environment variables
-load_dotenv()
-openai.api_key = os.getenv('OPENAI_API_KEY')
-LINKEDIN_USERNAME = os.getenv('LINKEDIN_USERNAME')
-LINKEDIN_PASSWORD = os.getenv('LINKEDIN_PASSWORD')
+# Set API keys and credentials from Streamlit secrets
+openai.api_key = st.secrets["openai_api_key"]
+LINKEDIN_USERNAME = st.secrets["linkedin_username"]
+LINKEDIN_PASSWORD = st.secrets["linkedin_password"]
 
 def setup_driver():
     """Setup Chrome driver with appropriate options"""
@@ -38,40 +38,40 @@ def setup_driver():
     return driver
 
 def linkedin_login(driver):
-    """Login to LinkedIn using Selenium"""
+    """Login to LinkedIn using credentials from Streamlit secrets"""
     try:
-        print("Attempting to login to LinkedIn...")
-        driver.get('https://www.linkedin.com/login')
-        time.sleep(3)  # Wait for page to load
+        driver.get("https://www.linkedin.com/login")
+        time.sleep(2)
         
-        # Wait for and find username field
-        username_field = WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.ID, "username"))
-        )
-        username_field.send_keys(LINKEDIN_USERNAME)
-        time.sleep(1)  # Small delay between actions
+        # Get credentials from Streamlit secrets with error handling
+        try:
+            username = st.secrets["linkedin_username"]
+            password = st.secrets["linkedin_password"]
+        except Exception as e:
+            logging.error(f"Error loading LinkedIn credentials from secrets: {str(e)}")
+            st.error("""Error loading LinkedIn credentials. Please ensure your .streamlit/secrets.toml file contains:
+            1. linkedin_username
+            2. linkedin_password
+            And check for proper formatting of special characters.""")
+            return False
         
-        # Find and fill password field
+        # Find and fill username
+        username_field = driver.find_element(By.ID, "username")
+        username_field.send_keys(username)
+        
+        # Find and fill password
         password_field = driver.find_element(By.ID, "password")
-        password_field.send_keys(LINKEDIN_PASSWORD)
-        time.sleep(1)  # Small delay between actions
+        password_field.send_keys(password)
         
         # Click login button
-        driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
+        login_button = driver.find_element(By.CSS_SELECTOR, "[type='submit']")
+        login_button.click()
         
-        # Wait for login to complete and verify
-        time.sleep(10)  # Increased wait time
+        time.sleep(3)  # Wait for login to complete
         
-        # Check if login was successful
-        if "feed" in driver.current_url or "checkpoint" in driver.current_url:
-            print("Successfully logged in to LinkedIn")
-            return True
-        
-        print("Login might have failed. Current URL:", driver.current_url)
-        return False
-            
+        return True
     except Exception as e:
-        print(f"Login failed with error: {str(e)}")
+        logging.error(f"LinkedIn login failed: {str(e)}")
         return False
 
 def extract_linkedin_data(driver, linkedin_url):

@@ -30,9 +30,16 @@ source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-4. Create a `.env` file with the following:
-```env
-OPENAI_API_KEY=your_api_key_here
+4. Set up secrets:
+   - Create a `.streamlit` directory in your project root
+   - Create `secrets.toml` inside `.streamlit` directory with:
+```toml
+# OpenAI API Configuration
+openai_api_key = "your-api-key-here"
+
+# LinkedIn Credentials (if needed)
+linkedin_username = "your-linkedin-email"
+linkedin_password = "your-linkedin-password"
 ```
 
 5. Run the application:
@@ -83,6 +90,7 @@ The application uses several data files:
 - The application requires an active internet connection
 - Some features use web scraping, which may be affected by website changes
 - API rate limits may apply for OpenAI services
+- Never commit your `secrets.toml` file to version control
 
 ## Contributing
 
