@@ -72,7 +72,7 @@ def analyze_website_data(website_data, max_tokens=50000):
     
     try:
         # Initialize OpenAI client
-        client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
+        client = openai.Client(api_key=st.secrets["openai_api_key"])
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{

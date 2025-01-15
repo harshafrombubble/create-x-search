@@ -398,7 +398,7 @@ Instructions:
 Please provide a detailed but concise analysis."""
 
         # Initialize OpenAI client
-        client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
+        client = openai.Client(api_key=st.secrets["openai_api_key"])
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
@@ -428,7 +428,7 @@ If no company matches or the query isn't asking for a company analysis, return "
 Return ONLY the exact company name(s) from the list, or "None". Do not add any other text."""
 
         # Initialize OpenAI client
-        client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
+        client = openai.Client(api_key=st.secrets["openai_api_key"])
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
@@ -677,7 +677,7 @@ Note: If no exact matches are found, analyze the available content to suggest th
 
         try:
             # Initialize OpenAI client
-            client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
+            client = openai.Client(api_key=st.secrets["openai_api_key"])
             response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[{"role": "user", "content": prompt}],

@@ -330,7 +330,7 @@ def analyze_founder_background(profile_data):
     
     try:
         # Initialize OpenAI client
-        client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
+        client = openai.Client(api_key=st.secrets["openai_api_key"])
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],

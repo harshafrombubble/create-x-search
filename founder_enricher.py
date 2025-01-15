@@ -364,7 +364,7 @@ def analyze_founder_background(profile_data, max_retries=3):
         try:
             print(f"Attempting to analyze background (attempt {attempt + 1}/{max_retries})...")
             # Initialize OpenAI client
-            client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
+            client = openai.Client(api_key=st.secrets["openai_api_key"])
             response = client.chat.completions.create(
                 model="gpt-4o-mini",  # Using GPT-4o-mini for faster, more affordable analysis
                 messages=[{"role": "user", "content": prompt}],
