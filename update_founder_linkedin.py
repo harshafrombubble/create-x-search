@@ -12,12 +12,9 @@ import time
 import pandas as pd
 import random
 
-# Set API keys and credentials from Streamlit secrets
+# Set LinkedIn credentials from Streamlit secrets
 LINKEDIN_USERNAME = st.secrets["linkedin_username"]
 LINKEDIN_PASSWORD = st.secrets["linkedin_password"]
-
-# Initialize OpenAI client
-client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
 
 def setup_driver():
     """Setup Chrome driver with appropriate options"""
@@ -332,7 +329,8 @@ def analyze_founder_background(profile_data):
     """
     
     try:
-        # Using the global client initialized above
+        # Initialize OpenAI client
+        client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],

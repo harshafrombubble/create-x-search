@@ -12,12 +12,9 @@ import os
 import streamlit as st
 import logging
 
-# Set API keys and credentials from Streamlit secrets
+# Set LinkedIn credentials from Streamlit secrets
 LINKEDIN_USERNAME = st.secrets["linkedin_username"]
 LINKEDIN_PASSWORD = st.secrets["linkedin_password"]
-
-# Initialize OpenAI client
-client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
 
 def setup_driver():
     """Setup Chrome driver with appropriate options"""
@@ -366,7 +363,8 @@ def analyze_founder_background(profile_data, max_retries=3):
     for attempt in range(max_retries):
         try:
             print(f"Attempting to analyze background (attempt {attempt + 1}/{max_retries})...")
-            # Using the global client initialized above
+            # Initialize OpenAI client
+            client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
             response = client.chat.completions.create(
                 model="gpt-4o-mini",  # Using GPT-4o-mini for faster, more affordable analysis
                 messages=[{"role": "user", "content": prompt}],

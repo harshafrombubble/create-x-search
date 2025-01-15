@@ -31,10 +31,6 @@ logging.basicConfig(
     ]
 )
 
-# Initialize OpenAI client
-client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
-
-# Database setup
 def init_db():
     """Initialize SQLite database with necessary tables"""
     with sqlite3.connect('createx_search.db') as conn:
@@ -401,14 +397,14 @@ Instructions:
 
 Please provide a detailed but concise analysis."""
 
-        # Using the global client initialized above
+        # Initialize OpenAI client
+        client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.7,
             max_tokens=1000
         )
-        
         return response.choices[0].message.content
     except Exception as e:
         logging.error(f"Error analyzing website: {str(e)}")
@@ -431,7 +427,8 @@ If multiple companies could match, list them all.
 If no company matches or the query isn't asking for a company analysis, return "None".
 Return ONLY the exact company name(s) from the list, or "None". Do not add any other text."""
 
-        # Using the global client initialized above
+        # Initialize OpenAI client
+        client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
@@ -677,9 +674,10 @@ Instructions:
 6. Format the response in a clear, organized way
 
 Note: If no exact matches are found, analyze the available content to suggest the most relevant options based on the query context."""
-        
+
         try:
-            # Using the global client initialized above
+            # Initialize OpenAI client
+            client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
             response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[{"role": "user", "content": prompt}],

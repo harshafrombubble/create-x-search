@@ -8,9 +8,6 @@ import re
 from urllib.parse import urlparse
 from youtube_transcript_api import YouTubeTranscriptApi
 
-# Initialize OpenAI client
-client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
-
 def count_tokens(text):
     """Estimate the number of tokens in a text string"""
     # Rough estimation: 1 token ≈ 4 characters for English text
@@ -74,6 +71,8 @@ def analyze_website_data(website_data, max_tokens=50000):
     truncated_text = truncate_to_token_limit(combined_text, max_tokens)
     
     try:
+        # Initialize OpenAI client
+        client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{
