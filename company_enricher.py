@@ -71,8 +71,8 @@ def analyze_website_data(website_data, max_tokens=50000):
     truncated_text = truncate_to_token_limit(combined_text, max_tokens)
     
     try:
-        # Initialize OpenAI client
-        client = openai.Client(api_key=st.secrets["openai_api_key"])
+        # Initialize OpenAI client with API key
+        client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{
