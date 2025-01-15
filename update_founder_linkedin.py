@@ -1,4 +1,6 @@
-import pandas as pd
+import os
+import openai
+import streamlit as st
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -7,16 +9,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-import openai
-import os
-from dotenv import load_dotenv
+import pandas as pd
 import random
 
-# Load environment variables
-load_dotenv()
-openai.api_key = os.getenv('OPENAI_API_KEY')
-LINKEDIN_USERNAME = os.getenv('LINKEDIN_USERNAME')
-LINKEDIN_PASSWORD = os.getenv('LINKEDIN_PASSWORD')
+# Set API keys and credentials from Streamlit secrets
+openai.api_key = st.secrets["openai_api_key"]
+LINKEDIN_USERNAME = st.secrets["linkedin_username"]
+LINKEDIN_PASSWORD = st.secrets["linkedin_password"]
 
 def setup_driver():
     """Setup Chrome driver with appropriate options"""
