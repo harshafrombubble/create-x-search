@@ -31,16 +31,8 @@ logging.basicConfig(
     ]
 )
 
-# Safely load secrets
-try:
-    openai.api_key = st.secrets["openai_api_key"]
-except Exception as e:
-    logging.error(f"Error loading secrets: {str(e)}")
-    st.error("""Error loading secrets. Please ensure your .streamlit/secrets.toml file is properly formatted:
-    1. Check for any unescaped special characters
-    2. Verify the file path: .streamlit/secrets.toml
-    3. Confirm the required keys are present: openai_api_key""")
-    st.stop()
+# Initialize OpenAI client
+client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
 
 # Database setup
 def init_db():
@@ -409,7 +401,7 @@ Instructions:
 
 Please provide a detailed but concise analysis."""
 
-        client = openai.OpenAI()
+        # Using the global client initialized above
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
@@ -439,7 +431,7 @@ If multiple companies could match, list them all.
 If no company matches or the query isn't asking for a company analysis, return "None".
 Return ONLY the exact company name(s) from the list, or "None". Do not add any other text."""
 
-        client = openai.OpenAI()
+        # Using the global client initialized above
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{"role": "user", "content": prompt}],
@@ -687,7 +679,7 @@ Instructions:
 Note: If no exact matches are found, analyze the available content to suggest the most relevant options based on the query context."""
         
         try:
-            client = openai.OpenAI()
+            # Using the global client initialized above
             response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[{"role": "user", "content": prompt}],

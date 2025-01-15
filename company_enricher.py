@@ -8,8 +8,8 @@ import re
 from urllib.parse import urlparse
 from youtube_transcript_api import YouTubeTranscriptApi
 
-# Set OpenAI API key from Streamlit secrets
-openai.api_key = st.secrets["openai_api_key"]
+# Initialize OpenAI client
+client = openai.OpenAI(api_key=st.secrets["openai_api_key"])
 
 def count_tokens(text):
     """Estimate the number of tokens in a text string"""
@@ -74,7 +74,6 @@ def analyze_website_data(website_data, max_tokens=50000):
     truncated_text = truncate_to_token_limit(combined_text, max_tokens)
     
     try:
-        client = openai.OpenAI()
         response = client.chat.completions.create(
             model="gpt-4o-mini",
             messages=[{
